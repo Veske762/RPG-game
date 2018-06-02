@@ -1,5 +1,6 @@
 # RPG-game
-
+Im C++ noob.
+Tips and advice are welcome.
 Console game inspired by exercise from Game Institute module 1 book chapter Chapter 5 Classes and Object Oriented Programming<br />
 Work in progress.<br />
 Feature list:<br />
