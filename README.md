@@ -34,6 +34,6 @@ Feature list:
 -common/rare/legendary loot stats
 -save/load system
 -code cleanup(some leftover stuff)
--item limits so wizard cant equip heavy armor and weapons same for fighter and spells
+-item limits so wizard cant equip heavy armor and weapon same for fighter and spells
 
 
