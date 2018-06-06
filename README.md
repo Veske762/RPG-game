@@ -26,14 +26,14 @@ Feature list:<br />
  TBD:<br />
 -fix input(bugs out if you enter a character when it expects int)<br />
 -skill point distribution(currently its random fighter gets more hp ,wizard gets more mana)<br />
--arena almost done<br />
--betting almost done<br />
+-arena (done player vs enemies,maybe adding npc vs npc while betting,location to be changed)(<br />
+-betting (done)<br />
 -more quests/bosses/items/places/monsters/spells<br />
 -health/mana potions<br />
 -resting system rework<br />
 -balance<br />
 -common/rare/legendary loot stats<br />
--save/load system<br />
+-save/load system(saving works not fully implemented,loading problem with spaces when reading from text file,works without space)<br /> 
 -code cleanup(some leftover stuff)<br />
 -item limits so wizard cant equip heavy armor and weapon same for fighter and spells<br />
 
