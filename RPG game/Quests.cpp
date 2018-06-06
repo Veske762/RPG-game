@@ -2,6 +2,7 @@
 #include "Quests.h"
 #include "Map.h"
 #include <Windows.h>
+#include "Player.h"
 using namespace std;
 
 
@@ -10,21 +11,74 @@ extern int startingQuest;
 Quests::Quests()
 {
 	mExpR = 0;
+	 rank = 0;
 	mGoldR = 0;
 }
 std::vector<Weapon> Quest;
 void Items()
 {
 	
-	//wepons/items;
+	
 }
 
+extern int monsterFlag;
+extern int mQuest1;
 void Quests::Quest1(Player& player, Map &map)
 {
+	
+	if (rank >= 3)
+	{
+		startingQuest = 3;
+	}
+	cout << endl<< "====WELCOME TO THE ARENA====";
+	cout << endl << endl;
+	cout << "Would you like to join the arena as a combatant or bet on a fight ?\n";
+	if (rank < 5) {
+		cout << "Current title Combatant\n";
+
+	}
+	else if (rank > 4 && rank < 11)
+	{
+		cout << endl << "Current title Duelist"<<endl;
+	}
+	else if (rank > 10 && rank < 13)
+	{
+		cout <<endl <<"Current title Gladiator\n"<<endl;
+		//starting skele king q
+	}
+	//ranks maybe proove yourself in the arena then come to me;
+	//if 15 kills rank = "????" unlock skele king
+	
+	cout << "1)join combat 2) bet 3) exit\n";
+	int choice = 0;
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+		//set special monsterflag
+		monsterFlag = 5;
+		player.Combat(player, map);
+		monsterFlag = 15;
+		rank++;
+		cout << endl<< "Current killsnumber" << rank <<"/10"<< endl;
+		Quest1(player,map);
+		//win counter
+		break;
+	case 2:
+		//bet system function fighter name level weapon vs Random(1,20) and random(1,20) who ever's larger wins; 100% gold +;
+		player.ArenaBet(player);
+		Quest1(player, map);
+		break;
+	case 3:
+
+		break;
+	default :
+		cout << "Wrong input\n";
+		break;
 
 
-	cout <<" deliver goods at location(Castle) get attacked line selection if j = column kick in attack proof get attacked return find out bandit hideout location??? after talk to 2nd npc he has info on banditen hideout";
-	//inn food/potions
+
+	}
 
 }
 void Quests::Quest2(Player& player, Map &map)
@@ -39,10 +93,11 @@ void Quests::Quest3(Player& player, Map &map)
 	extern int mQuest3;
 	//first quest go to down left dungeon and kill Skeleton King (skeleton king drops fat loot);
 	extern int doorLock;
+	
 	if (mQuest3 == 0)
 	{
-		cout << "Hey you ,are you up for a challenge?\n";
-		cout << "I need you to kill the Skeleton King, "
+		cout << "Gladiator?I was wrong about you.\n";
+		cout << "I need you to kill the Skeleton King, " << endl;
 			"his forces have been destroying surrounding villages\n";
 		cout << "First go to dungeon(south/west)(34,53) and find the artifact(description),we need it to open Skeleton King's tomb\n";
 		

@@ -12,6 +12,8 @@
 #include "Weapon.h"
 #include <Windows.h>
 #include <cstdlib>
+#include "Map.h"
+
 
 std::vector<Weapon> monsterItemsDrop;
 using namespace std;
@@ -63,14 +65,17 @@ void Player::takeDamage(int damage)
 
 void Player::createClass()
 {
+
+	
 	cout << "||==========================||" << endl;
 	cout << "||CHARACTER CLASS GENERATION||" << endl;
 	cout << "||==========================||" << endl;
 
 	// Input character's name.
 	cout << "Enter your character's name: ";
+	
 	getline(cin, mName);
-
+	
 	// Character selection.
 	cout << "Please select a character class " << endl;
 	cout << "1)Fighter 2)Wizard  : ";
@@ -191,6 +196,106 @@ void Player::createClass()
 }
 
 
+void Player::Bet()
+{
+
+
+
+}
+
+
+void Player::ArenaBet(Player player)
+{
+
+	cout << "1)Bet on Blue team\n";
+	cout << "2)Bet on Yellow team\n";
+	cout << "3)Exit\n";
+	int choice = 0;
+	int bet = 0;
+	int result = 0;
+	int betentered = 0;
+	int teamB = Random(1, 50);
+	int teamY = Random(1, 50);
+	cin >> choice;
+	
+	switch (choice)
+	{
+	case 1:
+		cout << "Enter bet\n";
+		cin >> bet;
+		if (bet > mGold)
+		{
+			cout << "Not enough gold\n";
+		}
+		else
+		{
+			mGold -= bet;
+			betentered = 1;
+			if (betentered == 1)
+			{
+
+				if (teamB > teamY)
+				{
+					result = 1;
+				}
+				else
+					result = 2;
+				cout << teamB;
+				cout << teamY;
+				if (choice == 1 && result == 1)
+				{
+					bet *= 2;
+					mGold += bet;
+					cout << "You won the bet!";
+					cout << " + " << bet << " Gold \n";
+
+				}
+				else
+					cout << "You lost the bet\n";
+
+
+			}
+			break;
+	case 2:
+		
+		cout << "Enter bet\n";
+		cin >> bet;
+		if (bet > mGold)
+		{
+			cout << "Not enough gold\n";
+		}
+		else
+		{
+			mGold -= bet;
+			betentered = 1;
+			if (choice == 2 && result == 2)
+			{
+				bet *= 2;
+				mGold += bet;
+				cout << "You won the bet!";
+				cout << "+" << bet << " Gold \n";
+			}
+			else
+				cout << "You lost the bet\n";
+		}
+		break;
+	case 3:
+
+		break;
+	default:
+		cout << "Wrong input\n";
+		break;
+
+
+
+		}
+	}
+		
+
+			system("PAUSE");
+			system("CLS");
+			
+}
 
 bool Player::attack(Monster& monster)
 {
@@ -527,9 +632,6 @@ void Player::equipStat(vector<Weapon> &playerinventory, int itemslot)
 				
 
 			}
-
-
-
 
 
 
@@ -966,6 +1068,27 @@ vector<Monster> checkRandomEncounter(vector<Monster> monster)
 	{
 		
 	}
+	if (monsterFlag == 5)
+	{
+		int roll = Random(1, 19);
+		if (roll <= 5)
+
+			monster.push_back(Monster("Archer combatant", 15, 15, 200, 1, "Crossbow", 5, 14, 200, Random(1, 13), 1));
+
+		if (roll >= 6 && roll <= 10)
+
+			monster.push_back(Monster("Light armor combatant", 25, 15, 200, 1, "Two Handed Sword", 6, 15, 200, Random(1, 13), 1));
+
+		else if (roll >= 11 && roll <= 15)
+
+			monster.push_back(Monster("Heavy armor combatant", 30, 15, 200, 5, "Two Handed Sword", 4, 25, 200, Random(1, 13), 1));
+
+		else if (roll >= 16 && roll <= 19)
+			monster.push_back(Monster("Gladiator", 40, 15, 200, 2, "Two Handed Sword", 1, 30, 200, Random(1, 13), 1));
+		
+
+
+	}
 		if (monsterFlag == 20)
 		{
 
@@ -1300,3 +1423,180 @@ int Player::Combat(Player& player,Map &map)
 
 }
 
+
+unsigned int vecadder = 0;
+void Player::Save(Player &player,Map &map)
+{
+	
+	extern vector<Weapon> PlayerI;
+	extern int Location;
+	extern int mQuest1;
+	extern int mQuest2;
+	extern int mQuest3;
+	extern int mHQuest1;
+	extern int mHQuest2;
+	extern int Location;
+
+	//save stats,location,position,quests status
+	/*		mRace = "Human";
+			mAccuracy = 18;
+			mHitPoints = 255;
+			mMaxHitPoints = 255;
+			mExpPoints = 0;
+			mNextLevelExp = 1000;
+			mLevel = 1;
+			mArmor = 1;
+			mWeapon.mName = "Staff";
+			mWeapon.mDamageRange.mLow = 30;
+			mWeapon.mDamageRange.mHigh = 80;
+			mMagicPoints = 25;
+			mMaxNumOfMagicPts = 25;
+			mSpellname.mName = "Fire ball";
+			mSpellname.mDamageRange.mLow = 50;
+			mSpellname.mDamageRange.mHigh = 70;
+			mSpellReq = 5;
+			mArmorz.mName = "White Robes";*/
+
+	ofstream fout;
+	//Player stats
+	
+	
+	fout.open("Save.txt");
+	fout << mRace << endl <<
+		mAccuracy << endl <<
+		mHitPoints << endl <<
+		mMaxHitPoints << endl <<
+		mGold << endl <<
+		mExpPoints << endl <<
+		mNextLevelExp << endl <<
+		mLevel << endl <<
+		mArmor << endl <<
+		mWeapon.mName << endl <<
+		mWeapon.mDamageRange.mLow << endl <<
+		mWeapon.mDamageRange.mHigh << endl <<
+		mMagicPoints << endl <<
+		mMaxNumOfMagicPts << endl <<
+		mSpellname.mName << endl <<
+		mSpellname.mDamageRange.mLow << endl <<
+		mSpellname.mDamageRange.mHigh << endl <<
+		mSpellReq << endl <<
+		mArmorz.mName << endl<<
+		Location<<endl;
+		
+	
+	//player location
+	  
+	/*
+	std::string mName;
+	Range mDamageRange;
+	
+	int mPrice;
+	int mEquipped;
+	int mArm;
+	int mHp;
+	int mMagics;
+	int mArmorEquiped;
+	int levelReq;*/
+	if (!PlayerI.empty())
+	{
+		for (int i = 0; i < 2; i++)//
+		{
+			fout <<
+				PlayerI[i].mName << endl <<
+				PlayerI[i].mDamageRange.mLow << endl <<
+				PlayerI[i].mDamageRange.mHigh << endl <<
+				PlayerI[i].mPrice << endl <<
+				PlayerI[i].mEquipped << endl <<
+				PlayerI[i].mArm << endl <<
+				PlayerI[i].mMagics << endl <<
+				PlayerI[i].mArmorEquiped << endl <<
+				PlayerI[i].levelReq << endl;
+
+		}
+	}
+
+	//global
+	/*int startingQuest = 0;
+int mQuest1 = 0;
+int mQuest2 = 1;
+int mQuest3 = 0;
+int mHQuest1 = 0;
+int mHQuest2 = 0;
+int monsterFlag = 0;
+int monsterBoss1 = 0;
+int doorLock = 0;
+int lootChestFlag = 0;
+int Location = 0;*/
+	
+	
+	fout.close();
+
+}
+
+void Player::Load(Player &player,Map map)
+{
+	
+	extern vector<Weapon> PlayerI;
+	//todo check if vec is empty replace 2 with counter from writing to file
+	for (int i = 0; i < 2; i++)
+	{
+		Weapon f;
+		PlayerI.push_back(f);
+	}
+
+	extern int Location;
+	ifstream inFile;
+	inFile.open("Save.txt");
+	
+
+		inFile >>mRace >>
+			mAccuracy >>
+			mHitPoints >>
+			mMaxHitPoints >>
+			mGold >>
+			mExpPoints >>
+			mNextLevelExp >>
+			mLevel >>
+			mArmor >>
+			mWeapon.mName >>
+			mWeapon.mDamageRange.mLow >>
+			mWeapon.mDamageRange.mHigh >>
+			mMagicPoints >>
+			mMaxNumOfMagicPts >>
+			mSpellname.mName >>
+			mSpellname.mDamageRange.mLow >>
+			mSpellname.mDamageRange.mHigh >>
+			mSpellReq >>
+			mArmorz.mName>>
+		    Location; 
+		for (int i = 0; i <2; i++)
+		{
+			inFile >>
+				PlayerI[i].mName >>
+				PlayerI[i].mDamageRange.mLow >>
+				PlayerI[i].mDamageRange.mHigh >>
+				PlayerI[i].mPrice >>
+				PlayerI[i].mEquipped >>
+				PlayerI[i].mArm >>
+				PlayerI[i].mMagics >>
+				PlayerI[i].mArmorEquiped >>
+				PlayerI[i].levelReq;
+			
+		}
+	
+	if (Location == 1)
+	{
+		
+	
+		map.worldMap(player, map);
+		
+	}
+	else if (Location == 2)
+	{
+		map.Harbor(player, map);
+	}
+	else if (Location == 5)
+	{
+		map.CastleMap(player, map);
+	}
+}

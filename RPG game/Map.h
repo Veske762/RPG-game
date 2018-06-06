@@ -40,7 +40,7 @@ public:
 	
 	void printPlayerPos();
 
-private:
+
 	
 	int mPlayerXPos;		
 	int mPlayerYPos;		

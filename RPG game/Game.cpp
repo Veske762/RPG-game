@@ -30,7 +30,8 @@ int main()
 {
 
 	gameintro();
-	system("Title Alpha ver 3.3");
+
+	system("Title Alpha ver 3.4");
 #if 0
 	system("COLOR 2f");
 #endif
@@ -38,17 +39,14 @@ int main()
 	RECT r;
 	GetWindowRect(console, &r); //stores the console's current dimensions
 
-	MoveWindow(console, r.left, r.top,800,860, TRUE); // 800 width, 100 height
+	MoveWindow(console, r.left, r.top, 800, 860, TRUE); // 800 width, 100 height
 
-#if 0
-	ofstream fout;
-	fout.open("Goldz.txt");
-	fout << 0 << endl;
-	fout.close();
-#endif
-	extern vector<Weapon> PlayerI;
 
-	
+
+
+
+
+
 
 	srand((unsigned int)time(0));
 
@@ -63,8 +61,32 @@ int main()
 
 	mainPlayer.itemDrop();
 
-	mainPlayer.createClass();
+	cout << "1)New game 2)Load game";
+	int choice = 0;
+	Player player;
+	Map map;
+	cin >> choice;
+	switch (choice)
+	{
+	case 1:
+		cin.ignore(256, '\n');
+		fflush(stdin);
+		mainPlayer.createClass();
+		break;
+	case 2:
+	{
 
+		player.Load(player, map);
+		break;
+	}
+	default:
+		cout << "Wrong input\n";
+		break;
+	}
+
+	
+		
+	
 	system("CLS");
 	bool done = true;
 
@@ -75,7 +97,7 @@ int main()
 	
 	while (done ) {
 		
-
+		
 		gameMap.worldMap(mainPlayer,gameMap);
 
 	

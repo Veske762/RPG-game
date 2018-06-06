@@ -42,6 +42,7 @@ public:
 	
 	void levelUp();
 
+	void Bet();
 	
 	void rest();
 
@@ -77,7 +78,15 @@ public:
 
 	void itemDrop();
 
+	void ArenaBet(Player player);
+
 	void itemPickup(std::vector<Weapon> &pinventory,int randomNumber);
+
+
+	void Save(Player &player, Map &map);
+	
+
+	void Load(Player &player, Map map);
 
 	// Data members.
 	std::string mName;				

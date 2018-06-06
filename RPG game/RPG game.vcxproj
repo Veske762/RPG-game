@@ -148,7 +148,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Armor.h" />
-    <ClInclude Include="ConsoleColor.h" />
     <ClInclude Include="Magic.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Monster.h" />

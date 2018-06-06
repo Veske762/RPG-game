@@ -10,6 +10,8 @@
 #include <Windows.h>
 #include <cstdlib>
 #include "Quests.h"
+#include "ConsoleColor.h"
+
 
 using namespace std;
 extern vector<Weapon> val;
@@ -25,7 +27,7 @@ int monsterFlag = 0;
 int monsterBoss1 = 0;
 int doorLock = 0;
 int lootChestFlag = 0;
-
+int Location = 0;
 
 void Map::Teleport(int &a,int &b)
 {
@@ -64,7 +66,7 @@ void Map::printPlayerPos()
 
 void Map::worldMap(Player &player, Map mapz)
 {
-	
+	Location = 1;
 	monsterFlag = 1;
 	int mapCounter = 0;
 	char (*a)[81];
@@ -119,7 +121,7 @@ void Map::worldMap(Player &player, Map mapz)
 		int mapCounter = 0;
 		
 		
-
+		
 		cout <<"Use arrow keys for movement\n" << endl;
 		cout << mPlayerXPos << "," << mPlayerYPos << endl;
 		for (int i = 0; i < 42; i++)
@@ -141,7 +143,7 @@ void Map::worldMap(Player &player, Map mapz)
 				}
 				else if (a[i][j] == '~')
 				{
-					cout << '~';
+					cout <<'~';
 				}
 				else if (a[i][j] == 'B')
 				{
@@ -269,6 +271,7 @@ void Map::worldMap(Player &player, Map mapz)
 
 	void Map::Dungeon1(Player &player, Map &mapz)
 	{
+		Location = 2;
 		lootChestFlag = 0;
 		monsterFlag = 2;
 		int mapCounter = 0;
@@ -393,7 +396,7 @@ void Map::worldMap(Player &player, Map mapz)
 
 	void Map::Dungeon2(Player &player, Map mapz)
 	{
-
+		Location = 3;
 		monsterFlag = 2;
 		int mapCounter = 0;
 		char(*d)[81];
@@ -529,7 +532,7 @@ void Map::Movement(Player &player, Map &mapz, char mapf[81][81])
 
 
 	cout << endl;
-	cout << "Press I to view inventory | C to view stats | R to rest" ;
+	cout << "Press I to view inventory | C to view stats | R to rest | S to save game";
 	cout << endl;
 
 	
@@ -595,6 +598,12 @@ void Map::Movement(Player &player, Map &mapz, char mapf[81][81])
 		else
 			mPlayerYPos++;
 	}
+	else if (GetAsyncKeyState(83))
+	{
+		player.Save(player,mapz);
+		cout << "Game saved\n";
+		system("PAUSE");
+	}
 	else if (GetAsyncKeyState(73))
 	{
 		extern vector<Weapon> PlayerI;
@@ -653,6 +662,7 @@ void Map::Movement(Player &player, Map &mapz, char mapf[81][81])
 
 void Map::Harbor(Player &player, Map mapz)
 {
+	Location = 4;
 	int mapCounter = 0;
 	monsterFlag = 15;
 	char(*b)[81];
@@ -789,7 +799,7 @@ void Map::Harbor(Player &player, Map mapz)
 
 void Map::CastleMap(Player &player, Map mapz)
 {
-
+	Location = 5;
 	monsterFlag = 15;//set monster flag to nothing
 
 	int mapCounter = 0;
@@ -868,6 +878,10 @@ void Map::CastleMap(Player &player, Map mapz)
 					{
 						cout << 'n';
 					}
+					else if (b[i == 12][j == 44] == 'c')
+					{
+						cout << 'n';
+					}
 					else
 						cout << " ";
 
@@ -879,15 +893,22 @@ void Map::CastleMap(Player &player, Map mapz)
 			}
 
 		}
-		
+		if (mPlayerXPos == 12 && mPlayerYPos == 44)
+		{
+			
+			if (startingQuest == 0)
+			{
+				Quests w;
+				w.Quest1(player, mapz);
+			}
+		}
 			if (mPlayerXPos == 12 && mPlayerYPos == 58)
 			{
-				startingQuest = 3;
-				if (startingQuest == 1)
+				if (startingQuest == 0)
 				{
-					Quests w;
-					w.Quest1(player, mapz);
+					cout << "You dont look strong enough for my task,go try your self at the arena and come back to me with the title of Gladiator\n";
 				}
+				
 				if (startingQuest == 2)
 				{
 					Quests w;

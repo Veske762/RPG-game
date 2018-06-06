@@ -28,7 +28,7 @@ void Shop::CityShopInventory()
 void Shop::ShopInventory()
 {  
 	
-	Weapon Axe("Double Edged Axe", 11, 20, 500, 0, 0, 0, 0, 3, 2);
+	Weapon Axe = { "Double Edged Axe", 11, 20, 500, 0, 0, 0, 0, 3, 2 };
 	Weapon Sword("Short Sword", 12, 19, 400, 0, 0, 0, 0, 3, 2);
 	Weapon flail("Flail", 8, 15, 250, 0, 0, 0, 0, 3, 0);
 	Weapon Steelarmor("Steel Armor set", 0, 0, 700, 3, 5, 25, 5, 0, 0);

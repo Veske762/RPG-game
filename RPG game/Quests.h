@@ -32,6 +32,8 @@ public:
 
 		void Hquest3(Player player, Map mapz);
 
+		
+	int rank;
 	int mGoldR;
 	int mExpR;
 	~Quests();

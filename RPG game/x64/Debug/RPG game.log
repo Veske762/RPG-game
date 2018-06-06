@@ -1,13 +1,5 @@
-﻿  stdafx.cpp
-  Weapon.cpp
-  Shop.cpp
-  Random.cpp
-  Quests.cpp
-  Player.cpp
-c:\users\stefan\source\repos\rpg game\rpg game\player.cpp(1175): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Monster.cpp
-c:\users\stefan\source\repos\rpg game\rpg game\monster.cpp(21): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+﻿  Player.cpp
+c:\users\stefan\source\repos\rpg game\rpg game\player.cpp(1298): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
   Map.cpp
-  Game.cpp
   Generating Code...
   RPG game.vcxproj -> C:\Users\Stefan\source\repos\RPG game\x64\Debug\RPG game.exe
