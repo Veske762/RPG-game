@@ -11,19 +11,19 @@ for (int i = 0; i < monster.size(); i++)<br />
 				{<br />
     //some non problem code<br />
     
-					monster.erase(monster.begin() +i);//here is the problem<br />
+					monster.erase(monster.begin() +i);//here is the problem
      
-     if enemies die 1 per turn it works fine but if Aoe attack kills 2 or more enemies this happens:<br />
-     example:<br />
-     player vs 3 enemies<br />
-     if aoe kills all of them at once<br />
-     monster vector index(0,1,2)<br />
-     first iteration i = 0 deletes monster at index 0<br />
+     if enemies die 1 per turn it works fine but if Aoe attack kills 2 or more enemies this happens:
+     example:
+     player vs 3 enemies
+     if aoe kills all of them at once
+     monster vector index(0,1,2)
+     first iteration i = 0 deletes monster at index 0
      now vector looks like this(0,1) 1,2 shift to 0,1<br />
-     second iteration i = 1 3rd monster gets deleted and 2nd one gets skipped<br />
-     and it leaves me with 2nd monster with -hp against the player<br />
+     second iteration i = 1 3rd monster gets deleted and 2nd one gets skipped
+     and it leaves me with 2nd monster with -hp against the player
      
-				}<br />
+				}
 Load problem:<br />
 function void Player::Load(Player &player,Map map)<br />
 Im saving stuff to the text file line by line (not fully yet) it works<br />
