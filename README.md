@@ -19,7 +19,7 @@ for (int i = 0; i < monster.size(); i++)<br />
      if aoe kills all of them at once
      monster vector index(0,1,2)
      first iteration i = 0 deletes monster at index 0
-     now vector looks like this(0,1) 1,2 shift to 0,1<br />
+     now vector looks like this(0,1) 1,2 shift to 0,1
      second iteration i = 1 3rd monster gets deleted and 2nd one gets skipped
      and it leaves me with 2nd monster with -hp against the player
      
