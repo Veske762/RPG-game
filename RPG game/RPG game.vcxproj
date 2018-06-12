@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Abilities.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="Magic.h" />
     <ClInclude Include="Map.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Quests.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="Abilities.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

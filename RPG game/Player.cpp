@@ -13,12 +13,16 @@
 #include <Windows.h>
 #include <cstdlib>
 #include "Map.h"
+#include "Abilities.h"
+#include <conio.h>
 
 
+std::vector<Ability> classAb;
 std::vector<Weapon> monsterItemsDrop;
 using namespace std;
 extern int monsterBoss1;
-
+int selection = 0;
+vector<Monster> monster;
 Player::Player()
 {
 	mName = "Default";
@@ -104,8 +108,8 @@ void Player::createClass()
 			mLevel = 1;
 			mArmor = 2;
 			mWeapon.mName = "Long Sword";
-			mWeapon.mDamageRange.mLow = 30;
-			mWeapon.mDamageRange.mHigh = 90;
+			mWeapon.mDamageRange.mLow = 5;
+			mWeapon.mDamageRange.mHigh = 15;
 			mMagicPoints = 10;
 			mMaxNumOfMagicPts = 25;
 			mSpellname.mName = "Furious Charge";
@@ -296,111 +300,229 @@ void Player::ArenaBet(Player player)
 			system("CLS");
 			
 }
-
-bool Player::attack(Monster& monster)
+int stun = 0;
+int aoe = -1;
+int check = -1;
+bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 {
+	Ability ab;
+	int b = 1;
+	int select = -1;
 	
-	int selection = 1;
-	cout << "1) Attack, 2) Cast a Spell,3)Run: ";
-	cin >> selection;
-	cout << endl;
-
-	switch (selection)
+	
+	cout << "1)Weapon attack \n";
+	
+	
+	for (int i = 0; i < classAb.size(); i++)
 	{
-	case 1:
-		cout << "You attack an " << monster.getName()
-			<< " with a " << mWeapon.mName << endl;
-
-		if (Random(0, 20) < mAccuracy)
+		if (classAb[i].coolDown != 0)
 		{
-			int damage = Random(mWeapon.mDamageRange);
-
-			int totalDamage = damage - monster.getArmor();
-
-			if (totalDamage <= 0)
+			if (check == 1)
 			{
-				cout << "Your attack failed to penetrate "
-					<< "the armor." << endl;
-			}
-			else
-			{
-				cout << "You attack for " << totalDamage
-					<< " damage!" << endl;
-
-						monster.takeDamage(totalDamage);
-			}
-		}
-		else
-		{
-			cout << "You miss!" << endl;
-		}
-		cout << endl;
-		break;
-	case 2:
-
-		if (mMagicPoints < mSpellReq)
-		{
-			cout << "Not enough mana...\n";
-		}
-		else if (Random(0, 20) < mAccuracy)
-		{
-			castSpell();
-			cout << "Casting at " << monster.getName()
-				<< " ... " << mSpellname.mName << endl;
-
-			int damage = Random(mSpellname.mDamageRange);
-
-			int totalDamage = damage - monster.getArmor();
-
-			if (totalDamage <= 0)
-			{
-				cout << "Your attack failed to penetrate "
-					<< "the armor." << endl;
-			}
-			else
-			{
-				cout << "You attack for " << totalDamage
-					<< " damage!" << endl;
-
-				
-				monster.takeDamage(totalDamage);
-			}
-		}
-		else
-		{
-			castSpell();
-			cout << "You miss!" << endl;
-		}
-
-		break;
-	case 3:
-	{
-		int roll = Random(1, 3);
-		if (monsterBoss1 == 1)
-		{
-			cout << "You cant escape the boss fight\n";
-		}
-		else
-		{
-			if (roll == 1)
-			{
-				cout << "You run away!" << endl;
-				return true;
-			}
-			else
-			{
-				cout << "You could not escape!" << endl;
 				break;
 			}
+			else
+			{
+				classAb[i].coolDown--;
+			}
+
 		}
-
 	}
-	default:
-		cout << "Wrong input\n";
-		break;
-	}
+		for (int i = 0; i < classAb.size();i++)
+		{
+			
+				cout << b + 1 << ")" << classAb[i].mName ;
+				if (classAb[i].coolDown == 0)
+				{
+					cout << " : Ability ready	" << endl;
+				}
+				else
+				{
+					cout << " : Cooldown " << classAb[i].coolDown <<"/"<<classAb[i].coolDownMax<<endl; //cd vs cd max 
+				}
+				b++;
+		}
+		
+		
+		cin >> select;
+			cout << endl;
+			switch (select)
+			{
+			case 1:
+				check = 0;
+				cout << "You attack an " << monster.getName()
+					<< " with a " << mWeapon.mName << endl;
 
-	return false;
+				if (Random(0, 20) < mAccuracy)
+				{
+					int damage = Random(mWeapon.mDamageRange);
+
+					int totalDamage = damage - monster.getArmor();
+
+					if (totalDamage <= 0)
+					{
+						cout << "Your attack failed to penetrate "
+							<< "the armor." << endl;
+					}
+					else
+					{
+						cout << "You attack for " << totalDamage
+							<< " damage!" << endl;
+
+						monster.takeDamage(totalDamage);
+					}
+				}
+				else
+				{
+					cout << "You miss!" << endl;
+				}
+				cout << endl;
+				break;
+			case 2:
+				if (classAb[0].coolDown != 0)
+				{
+					check = 1;
+					cout << "ABILITY IS ON COOLDOWN!\n";
+					attack(monster, monst, selection);
+
+				}
+				else
+				{
+					check = 0;
+					
+					classAb[0].coolDown = classAb[0].coolDownMax;
+					if (classAb[0].types == 0)
+					{
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+					}
+					else if (classAb[0].types == 1)
+					{
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+					}
+					else if (classAb[0].types == 2)
+					{
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+					}
+				}
+				break;
+			case 3:
+				if (classAb[1].coolDown != 0)
+				{
+					check = 1;
+					cout << classAb[0].mName <<" ABILITY IS ON COOLDOWN!\n";
+					attack(monster, monst, selection);
+				}
+				else
+				{
+					check = 0;
+					
+					classAb[1].coolDown = classAb[1].coolDownMax;
+					if (classAb[1].types == 0)
+					{
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+					}
+					else if (classAb[1].types == 1)
+					{
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+					}
+					else if (classAb[1].types == 2)
+					{
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+					}
+				}
+				break;
+			case 4:
+				if (classAb[2].coolDown != 0)
+				{
+					check = 1;
+					cout << classAb[2].mName << " ABILITY IS ON COOLDOWN!\n";
+					
+					attack(monster, monst, selection);
+				}
+				else
+				{
+					check = 0;
+					classAb[2].coolDown = classAb[2].coolDownMax;
+					
+					if (classAb[2].types == 0)
+					{
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+					}
+					else if (classAb[2].types == 1)
+					{
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+					}
+					else if (classAb[2].types == 2)
+					{
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+					}
+
+				}
+				break;
+			case 5:
+				if (classAb[3].coolDown != 0)
+				{
+					check = 1;
+					cout << classAb[3].mName << " ABILITY IS ON COOLDOWN!\n";
+
+					attack(monster, monst, selection);
+				}
+				else
+				{
+					check = 0;
+					classAb[3].coolDown = classAb[3].coolDownMax;
+					
+					if (classAb[3].types == 0)
+					{
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+					}
+					else if (classAb[3].types == 1)
+					{
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+					}
+					else if (classAb[3].types == 2)
+					{
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+					}
+					else if (classAb[3].types == 3)
+					{
+						ab.Bleed(classAb, monster, mWeapon, mAccuracy,selection, monst);
+					}
+				}
+
+				break;
+			case 6:
+			{
+				int roll = Random(1, 3);
+				if (monsterBoss1 == 1)
+				{
+					cout << "You cant escape the boss fight\n";
+				}
+				else
+				{
+					if (roll == 1)
+					{
+						cout << "You run away!" << endl;
+						return true;
+					}
+					else
+					{
+						cout << "You could not escape!" << endl;
+						break;
+					}
+				}
+
+			}
+			default:
+				check = 1;
+				cout << "Wrong input\n";
+				attack(monster, monst, selection);
+				break;
+
+			}
+		
+			return false;
+		
 }
 
 void Player::itemDrop()
@@ -447,7 +569,7 @@ void Player::itemPickup(vector<Weapon> &pinventory,int randomNumber)
 
 	
 	int item = 0;
-	randomNumber = Random(1, 50);
+	randomNumber = Random(1, 23);
 	int choice = 0;
 	if (randomNumber > 0 && randomNumber<= 10)
 	{
@@ -557,22 +679,7 @@ void Player::levelUp()
 			mMagicPoints = mMaxNumOfMagicPts;
 			mHitPoints = mMaxHitPoints;
 		}
-		else if (mClassName == "Cleric")
-		{
-			mAccuracy += Random(1, 3);
-			mMaxHitPoints += Random(2, 4);
-			mArmor += Random(1, 2);
-
-			mHitPoints = mMaxHitPoints;
-		}
-		else if (mClassName == "Thief")
-		{
-			mAccuracy += Random(2, 6);
-			mMaxHitPoints += Random(2, 4);
-			mArmor += Random(1, 2);
-
-			mHitPoints = mMaxHitPoints;
-		}
+		
 	}
 }
 
@@ -1054,12 +1161,12 @@ extern int mQuest3;
 
 extern int mHQuest1;
 
-vector<Monster> checkRandomEncounter(vector<Monster> monster)
+vector<Monster> Player::checkRandomEncounter(vector<Monster> monster)
 {
 	
-
-
-	int numMonsters = Random(0, 3);
+	int highLevel =10 ;
+	int lowLevel = 1;
+	int numMonsters = Random(1, 3);
 
 	extern int monsterFlag;
 
@@ -1073,18 +1180,18 @@ vector<Monster> checkRandomEncounter(vector<Monster> monster)
 		int roll = Random(1, 19);
 		if (roll <= 5)
 
-			monster.push_back(Monster("Archer combatant", 15, 15, 200, 1, "Crossbow", 5, 14, 200, Random(1, 13), 1));
+			monster.push_back(Monster("Archer combatant", 15, 15, 200, 1, "Crossbow", 5, 14, 200, Random(5, 13), 1,0));
 
 		if (roll >= 6 && roll <= 10)
 
-			monster.push_back(Monster("Light armor combatant", 25, 15, 200, 1, "Two Handed Sword", 6, 15, 200, Random(1, 13), 1));
+			monster.push_back(Monster("Light armor combatant", 25, 15, 200, 1, "Two Handed Sword", 6, 15, 200, Random(5, 13), 1,0));
 
 		else if (roll >= 11 && roll <= 15)
 
-			monster.push_back(Monster("Heavy armor combatant", 30, 15, 200, 5, "Two Handed Sword", 4, 25, 200, Random(1, 13), 1));
+			monster.push_back(Monster("Heavy armor combatant", 30, 15, 200, 5, "Two Handed Sword", 4, 25, 200, Random(5, 13), 1,0));
 
 		else if (roll >= 16 && roll <= 19)
-			monster.push_back(Monster("Gladiator", 40, 15, 200, 2, "Two Handed Sword", 1, 30, 200, Random(1, 13), 1));
+			monster.push_back(Monster("Gladiator", 40, 15, 200, 2, "Two Handed Sword", 1, 30, 200, Random(5, 13), 1,0));
 		
 
 
@@ -1092,16 +1199,16 @@ vector<Monster> checkRandomEncounter(vector<Monster> monster)
 		if (monsterFlag == 20)
 		{
 
-			monster.push_back(Monster("Skeleton King", 355, 15, 2000, 5, "Two Handed Sword", 5, 14, 200, Random(10,12), 1));
+			monster.push_back(Monster("Skeleton King", 355, 15, 2000, 5, "Two Handed Sword", 5, 14, 200, Random(10,12), 1,0));
 			mQuest3 = 4;
 		}
 		if (monsterFlag == 19)
 		{
-			monster.push_back(Monster("Bandit Archer", 15, 15, 200, 1, "Crossbow", 5, 14, 200, Random(1, 7), 1));
-			monster.push_back(Monster("Bandit", 35, 15, 200, 2, "Two Handed Sword", 5, 14, 200, Random(1, 7), 1));
-			monster.push_back(Monster("Bandit", 35, 15, 200, 2, "Two Handed Sword", 5, 14, 200, Random(1, 7), 1));
+			monster.push_back(Monster("Bandit Archer", 15, 15, 200, 1, "Crossbow", 5, 14, 200, Random(4, 12), 1,0));
+			monster.push_back(Monster("Bandit", 35, 15, 200, 2, "Two Handed Sword", 5, 14, 200, Random(4, 12), 1,0));
+			monster.push_back(Monster("Bandit", 35, 15, 200, 2, "Two Handed Sword", 5, 14, 200, Random(4, 12), 1,0));
 
-			monster.push_back(Monster("Bandit", 35, 15, 200, 2, "Two Handed Sword", 5, 14, 200, Random(1, 7), 1));
+			monster.push_back(Monster("Bandit", 35, 15, 200, 2, "Two Handed Sword", 5, 14, 200, Random(4, 12), 1,0));
 
 			mHQuest1 = 3;
 		}
@@ -1115,32 +1222,39 @@ vector<Monster> checkRandomEncounter(vector<Monster> monster)
 			for (int c = 0; c < numMonsters; c++)
 
 			{
-				int roll = Random(0, 50);
+				int roll = Random(0, 20);
 
 
 				if (monsterFlag == 1) {
 
-
-
-
+					if (mLevel >= 3 && mLevel<=5)
+					{
+						highLevel = 20;
+						lowLevel = 5;
+					}
+					else if (mLevel >= 6 && mLevel <= 8)
+					{
+						highLevel = 30;
+						lowLevel = 10;
+					}
 					if (roll <= 5)
 
-						monster.push_back(Monster("Scamp", 8, 6, 75, 0, "Dagger", 1, 6, Random(1, 10), Random(1, 5), 1));
+						monster.push_back(Monster("Scamp", 8, 6, 75, 0, "Dagger", 1, 6, Random(1, 10), Random(lowLevel, highLevel), 1,0));
 
 					if (roll >= 6 && roll <= 10)
 
-						monster.push_back(Monster("Orc", 20, 8, 200, 1, "Short Sword", 2, 8, Random(9, 18), Random(1, 5), 1));
+						monster.push_back(Monster("Orc", 20, 8, 200, 1, "Short Sword", 2, 8, Random(9, 18), Random(lowLevel, highLevel), 1,0));
 
 					else if (roll >= 11 && roll <= 15)
 
-						monster.push_back(Monster("Goblin", 12, 6, 100, 0, "Dagger", 3, 10, Random(1, 35), Random(1, 5), 1));
+						monster.push_back(Monster("Goblin", 12, 6, 100, 0, "Dagger", 3, 10, Random(1, 35), Random(lowLevel, highLevel), 1,0));
 
 					else if (roll >= 16 && roll <= 19)
 
-						monster.push_back(Monster("Ogre", 28, 12, 200, 1, "Club", 4, 12, Random(5, 75), Random(1, 5), 1));
+						monster.push_back(Monster("Ogre", 28, 12, 200, 1, "Club", 4, 12, Random(5, 75), Random(lowLevel, highLevel), 1,0));
 					else if (roll == 20)
 
-						monster.push_back(Monster("Orc Lord", 35, 15, 500, 1, "Two Handed Sword", 5, 14, 200, Random(5, 7), 1));
+						monster.push_back(Monster("Orc Lord", 35, 15, 500, 1, "Two Handed Sword", 5, 14, 200, Random(lowLevel, highLevel), 1,0));
 
 				}
 				else if (monsterFlag == 2)
@@ -1148,24 +1262,24 @@ vector<Monster> checkRandomEncounter(vector<Monster> monster)
 
 					if (roll <= 5)
 
-						monster.push_back(Monster("Skeleton ", 8, 6, 75, 0, "Dagger", 1, 6, Random(1, 10), Random(1, 5), 1));
+						monster.push_back(Monster("Skeleton Grunt", 8, 6, 75, 0, "Dagger", 1, 6, Random(1, 10), Random(lowLevel, highLevel), 1,0));
 
 					if (roll >= 6 && roll <= 10)
 
-						monster.push_back(Monster("Skeleton Warrior", 20, 8, 200, 1, "Short Sword", 2, 8, Random(9, 18), Random(1, 5), 1));
+						monster.push_back(Monster("Skeleton Warrior", 20, 8, 200, 1, "Short Sword", 2, 8, Random(9, 18), Random(lowLevel, highLevel), 1,0));
 
 					else if (roll >= 11 && roll <= 15)
 
-						monster.push_back(Monster("Skeleton Archer", 12, 6, 100, 0, "Dagger", 3, 10, Random(1, 35), Random(1, 5), 1));
+						monster.push_back(Monster("Skeleton Archer", 12, 6, 100, 0, "Dagger", 3, 10, Random(1, 35), Random(lowLevel, highLevel), 1,0));
 
 					else if (roll >= 16 && roll <= 19)
 
-						monster.push_back(Monster("Skeleton Brute", 28, 12, 500, 2, "Club", 4, 12, Random(5, 75), Random(1, 5), 1));
+						monster.push_back(Monster("Skeleton Brute", 28, 12, 500, 2, "Club", 4, 12, Random(5, 75), Random(lowLevel, highLevel), 1,0));
 
 
 					else if (roll == 20)
 
-						monster.push_back(Monster("Skeleton Lord", 35, 15, 2000, 5, "Two Handed Sword", 5, 14, 200, Random(5, 7), 1));
+						monster.push_back(Monster("Skeleton Commander", 35, 15, 2000, 5, "Two Handed Sword", 5, 14, 200, Random(lowLevel, highLevel), 1,0));
 
 
 
@@ -1229,8 +1343,7 @@ unsigned int Player::getUserInput(unsigned int low, unsigned int high)
 
 }
 
-
-
+int monsterID = 0;
 
 int Player::Combat(Player& player,Map &map)
 {
@@ -1251,13 +1364,13 @@ int Player::Combat(Player& player,Map &map)
 
 		int totalGoldReward = 0;
 
-		int selection = 0;
+		
 		//Run combat simulation.
 
 		while (true)
 
 		{
-			
+
 			system("CLS");
 
 			//Display combatants hit points.
@@ -1272,7 +1385,7 @@ int Player::Combat(Player& player,Map &map)
 
 
 
-			
+
 
 			//If player encounters multiple monsters, let them choose one to attack.
 
@@ -1293,10 +1406,10 @@ int Player::Combat(Player& player,Map &map)
 					cout << c + 1 << ". " << monster[c].getName() << endl;
 
 				}
+
 				
-				//bug after killing enemy selecting same spot OUT OF RANGE vector error
 				selection = getUserInput(0, monster.size());
-				
+
 				switch (selection)
 				{
 				case 1:
@@ -1321,58 +1434,73 @@ int Player::Combat(Player& player,Map &map)
 
 			}
 			else
-			
+
 				selection = 0;
+
+			extern vector <Weapon> val;
+			bool runAway = 0;
 			
 
 
-			//Initialize the run away boolean variable then the player attacks the monster first.
-
-			bool runAway = attack(monster[selection]);
+			runAway = attack(monster[selection], monster, selection);
 
 
 
+			extern int counter;
+			
 			//If the player killed the monster with its attack.
+			for (int i = 0; i < monster.size(); i++)
+			{ 
+				if (monster[i].isDead())
+				{
 
-			if (monster[selection].isDead())
-
-			{
-
-				extern vector<Weapon> PlayerI;
-				
-					monster[selection].monsteritemSeed = Random(1, 50);
-					if (monster[selection].monsteritemSeed <= 34)
+					if (monster[i].monsterStatus == 1)
 					{
-						cout << monster[selection].mName;
-						itemPickup(PlayerI, monster[selection].monsteritemSeed);
+						counter = 6;
 					}
 
+					extern vector<Weapon> PlayerI;
+
+					monster[i].monsteritemSeed = Random(1, 250);
+					if (monster[i].monsteritemSeed <= 34)
+					{
+						cout << monster[i].mName;
+						itemPickup(PlayerI, monster[i].monsteritemSeed);
+
+					}
+
+
+					totalXPReward += monster[i].getXPReward();//Add monsters xp reward to the total xp reward.
+
+					totalGoldReward += monster[i].getGoldReward();//Add monsters godl reward to the toal gold reward.
+
 				
-				totalXPReward += monster[selection].getXPReward();//Add monsters xp reward to the total xp reward.
-
-				totalGoldReward += monster[selection].getGoldReward();//Add monsters godl reward to the toal gold reward.
-
-				monster.erase(monster.begin() + selection);//Remove dead monster from monster vector.
-
-				
-				
-			}
+					monster.erase(monster.begin() +i);//Remove dead monster from monster vector.
+					
 
 
-
+				}
 			//Test if the player runs away.
+				else
+				{
+					
+					if (runAway)
+					{
+						counter = 6;
+						return 0;
+					}
+				}
 
-			if (runAway)
-
-				return 0;
-
-
-
+		}
 			//Test if all monsters are dead.
 
 			if (monster.empty())
 			{
-				
+				cout << endl;
+				for (int i = 0; i < classAb.size(); i++)
+				{
+					classAb[i].coolDown = 0;//reset cooldowns after all enemies are dead
+				}
 				victory(totalXPReward, totalGoldReward);
 
 				levelUp();
@@ -1386,9 +1514,10 @@ int Player::Combat(Player& player,Map &map)
 			//Monster's attack the player.
 
 			for (unsigned int c = 0; c < monster.size(); c++)
-
-				monster[c].attack(player);
-
+			{
+				monsterID = c;
+				monster[c].attack(player, monster);
+			}
 			/*
 
 			If a monster kills the player the game is over
@@ -1599,4 +1728,39 @@ void Player::Load(Player &player,Map map)
 	{
 		map.CastleMap(player, map);
 	}
+}
+
+
+void Player::Abilityvec()
+{
+	Ability hdmgF("Ravager", 20, 40, 0, 0, 0, 0, 0, 0, 3);
+	Ability stunF("Bash", 5, 15, 0, 1, 0, 0, 1, 0, 4);
+	Ability aoeF("Blade Storm", 10, 20, 1, 0, 0, 0, 2, 0, 3);
+	Ability bleedF("Deep Wounds", 4, 17, 0, 0, 1, 0, 3, 0, 2);
+
+	Ability hdmgW("Frost Bolt", 20, 40, 0, 0, 0, 0, 0, 0, 3);
+	Ability stunW("Freeze", 5, 15, 0, 1, 0, 0, 1, 0, 4);
+	Ability aoeW("Blizzard", 10, 20, 1, 0, 0, 0, 2, 0, 3);
+	Ability bleedW("Curse", 0, Random(1, 15), 0, 0, 1, 0, 3, 0, 2);
+
+	if (mClassName == "Fighter")
+	{
+
+		classAb.push_back(hdmgF);
+		classAb.push_back(stunF);
+		classAb.push_back(aoeF);
+		classAb.push_back(bleedF);
+	}
+	
+	else if(mClassName == "Wizard")
+	{
+		
+
+		classAb.push_back(hdmgW);
+		classAb.push_back(stunW);
+		classAb.push_back(aoeW);
+		classAb.push_back(bleedW);
+
+	}
+
 }

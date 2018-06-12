@@ -1,20 +1,20 @@
-Elf
+Human
 18
-255
-255
+280
+280
 0
 0
 1000
 1
-1
-Staff
-30
-80
-25
-25
-Frost bolt
-40
-70
+2
+Long Sword
 5
-Black Robes
+15
+10
+25
+Furious Charge
+40
+90
+5
+Steel armor
 1

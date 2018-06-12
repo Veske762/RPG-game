@@ -6,7 +6,7 @@
 
 #include "Weapon.h"
 #include <string>
-
+#include <vector>
 
 
 class Player;
@@ -15,7 +15,7 @@ class Monster
 {
 public:
 	
-	Monster(const std::string& name, int hp, int acc, int xpReward, int armor, const std::string& weaponName, int lowDamage, int highDamage,int goldReward,int monsterlvl, int itemseed);
+	Monster(const std::string& name, int hp, int acc, int xpReward, int armor, const std::string& weaponName, int lowDamage, int highDamage,int goldReward,int monsterlvl, int itemseed,int status);
 
 	
 	
@@ -37,7 +37,7 @@ public:
 	int    getArmor();
     int getGoldReward();
 	
-	void attack(Player& player);
+	void attack(Player& player, std::vector<Monster> &monster);
 
 	
 	
@@ -56,6 +56,7 @@ public:
 	int         mGoldReward;
 	int monsterLevel;
 	int monsteritemSeed;
+	int monsterStatus;
 };
 
 #endif //MONSTER_H

@@ -5,12 +5,13 @@
 #include "Random.h"
 #include "Player.h"
 #include "Weapon.h"
+#include "Abilities.h"
 using namespace std;
 
 
 Monster::Monster(const std::string& name, int hp, int acc,
 	int xpReward, int armor, const std::string& weaponName,
-	int lowDamage, int highDamage,int goldReward,int monsterlvl,int itemseed)
+	int lowDamage, int highDamage,int goldReward,int monsterlvl,int itemseed,int status)
 {
 	mName = name;
 	mHitPoints = hp +(0,3* monsterlvl);
@@ -23,6 +24,7 @@ Monster::Monster(const std::string& name, int hp, int acc,
 	mGoldReward = goldReward+(3*monsterlvl);
 	monsterLevel = monsterlvl;
 	monsteritemSeed = itemseed;
+	monsterStatus = status;
 }
 
 int Monster::monsterStats(int l)
@@ -77,31 +79,89 @@ int Monster::getArmor()
 	return mArmor;
 }
 
-void Monster::attack(Player& player)
+int counter =6;
+
+void Monster::attack(Player& player, vector<Monster> &monster)
 {
-	cout << "A " << mName << " attacks you "
-		<< "with a " << mWeapon.mName << endl;
-	if (Random(0, 20) < mAccuracy)
+	extern int monsterID;
+	extern int stun;
+	extern int selection;
+	extern int aoe;
+	int check = 0;
+	extern vector<Ability> classAb;
+
+	
+
+	if (monster[monsterID].monsterStatus == 0 || monster[monsterID].monsterStatus == 2)
 	{
-		int damage = Random(mWeapon.mDamageRange);
-		int totalDamage = damage - player.getArmor();
-		if (totalDamage <= 0)
+		if (monster[monsterID].monsterStatus == 2)
 		{
-			cout << "The monster's attack failed to "
-				<< "penetrate your armor." << endl;
+			int damage = Random(classAb[3].mDamageRange);
+			cout << monster[monsterID].mName << " Bleeds for " << damage << " damage\n";
+			takeDamage(damage);
 		}
+
+		cout << "A " << mName << " attacks you "
+			<< "with a " << mWeapon.mName << endl;
+		if (Random(0, 20) < mAccuracy)
+		{
+			int damage = Random(mWeapon.mDamageRange);
+			int totalDamage = damage - player.getArmor();
+			if (totalDamage <= 0)
+			{
+				cout << "The monster's attack failed to "
+					<< "penetrate your armor." << endl;
+			}
+			else
+			{
+				cout << "You are hit for " << totalDamage
+					<< " damage!" << endl;
+				player.takeDamage(totalDamage);
+			}
+			
+			
+		}
+
 		else
 		{
-			cout << "You are hit for " << totalDamage
-				<< " damage!" << endl;
-			player.takeDamage(totalDamage);
+			cout << "The " << mName << " missed!" << endl;
 		}
+		cout << endl;
+
+
 	}
-	else
+	else if (monster[monsterID].monsterStatus == 1)
 	{
-		cout << "The " << mName << " missed!" << endl;
+
+		while (counter != 0)
+		{
+
+			if (counter == 0)
+			{
+				counter = 6;
+			}
+
+
+
+			cout << monster[monsterID].mName << " STUNNED for " << counter << " turn/s\n";
+			if (counter == 1)
+			{
+
+				monster[selection].monsterStatus = 0;
+
+
+				break;
+
+			}
+
+			counter--;
+			break;
+		}
+
 	}
-	cout << endl;
+	
+
+	
 }void Monster::displayHitPoints()
 {
 

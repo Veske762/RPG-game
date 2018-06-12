@@ -23,7 +23,7 @@ public:
 	
 	bool isDead();
 
-	
+	std::vector<Monster> checkRandomEncounter(std::vector<Monster> monster);
 
 	int  getArmor();
 	
@@ -36,7 +36,7 @@ public:
 	void createClass();
 
 	
-	bool attack(Monster& monster);
+	bool attack(Monster& monster, std::vector<Monster> &monst,int selection);
 
 	
 	
@@ -85,6 +85,7 @@ public:
 
 	void Save(Player &player, Map &map);
 	
+	void Abilityvec();
 
 	void Load(Player &player, Map map);
 
@@ -110,5 +111,9 @@ public:
 	
 	
 }; 
+
+
+
+	
 
 #endif //PLAYER_H

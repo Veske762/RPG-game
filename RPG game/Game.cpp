@@ -8,7 +8,7 @@
 #include "Shop.h"
 #include <windows.h>
 #include <limits>
-
+#include "Abilities.h"
 using namespace std;
 
 
@@ -31,7 +31,7 @@ int main()
 
 	gameintro();
 
-	system("Title Alpha ver 3.4");
+	system("Title Game");
 #if 0
 	system("COLOR 2f");
 #endif
@@ -53,12 +53,14 @@ int main()
 	Shop shopz;
 	shopz.ShopInventory();
 
-
+	
 	Map gameMap;
 
-
+	extern vector<Ability> classAb;
 	Player mainPlayer;
-
+	
+	
+	
 	mainPlayer.itemDrop();
 
 	cout << "1)New game 2)Load game";
@@ -70,7 +72,7 @@ int main()
 	{
 	case 1:
 		cin.ignore(256, '\n');
-		fflush(stdin);
+		
 		mainPlayer.createClass();
 		break;
 	case 2:
@@ -86,7 +88,7 @@ int main()
 
 	
 		
-	
+	mainPlayer.Abilityvec();
 	system("CLS");
 	bool done = true;
 
