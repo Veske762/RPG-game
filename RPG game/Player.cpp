@@ -14,15 +14,40 @@
 #include <cstdlib>
 #include "Map.h"
 #include "Abilities.h"
-#include <conio.h>
+#include <sstream>
 
 
+
+std::vector<Ability> playerAb;
 std::vector<Ability> classAb;
 std::vector<Weapon> monsterItemsDrop;
 using namespace std;
 extern int monsterBoss1;
 int selection = 0;
 vector<Monster> monster;
+
+
+
+
+void chooseAbility()
+{
+
+	/*
+	called on level up
+	display all abilities
+	choose 1
+	add to playerAb
+	change all classAb to playerAb
+	upgrade abilities on next level up strength int itd..
+	*/
+
+
+
+}
+
+
+
+
 Player::Player()
 {
 	mName = "Default";
@@ -43,7 +68,9 @@ Player::Player()
 	mSpellname.mDamageRange.mLow = 0;
 	mSpellname.mDamageRange.mHigh = 0;
 	mArmorz.mName = "Default Armor name";
-	
+	mStrength = 0;
+	mIntelligence = 0;
+	mSkillPoints = 0;
 }
 
 
@@ -99,17 +126,17 @@ void Player::createClass()
 		{
 		case 1:
 			mRace = "Human";
-
+			mGold = 5555;
 			mAccuracy = 18;
-			mHitPoints = 280;
-			mMaxHitPoints = 280;
+			mHitPoints = 5280;
+			mMaxHitPoints = 5280;
 			mExpPoints = 0;
 			mNextLevelExp = 1000;
 			mLevel = 1;
 			mArmor = 2;
 			mWeapon.mName = "Long Sword";
-			mWeapon.mDamageRange.mLow = 5;
-			mWeapon.mDamageRange.mHigh = 15;
+			mWeapon.mDamageRange.mLow =35;
+			mWeapon.mDamageRange.mHigh = 55;
 			mMagicPoints = 10;
 			mMaxNumOfMagicPts = 25;
 			mSpellname.mName = "Furious Charge";
@@ -117,19 +144,21 @@ void Player::createClass()
 			mSpellname.mDamageRange.mLow = 40;
 			mSpellname.mDamageRange.mHigh = 90;
 			mArmorz.mName = "Steel armor";
+			mStrength = 25;
+			mIntelligence = 5;
 			break;
 		case 2:
 			mRace = "Half-orc";
 			mAccuracy = 18;
-			mHitPoints =  80;
-			mMaxHitPoints = 80;
+			mHitPoints =  5280;
+			mMaxHitPoints = 5280;
 			mExpPoints = 0;
 			mNextLevelExp = 1000;
 			mLevel = 1;
 			mArmor = 2;
 			mWeapon.mName = "Dagger";
-			mWeapon.mDamageRange.mLow = 40;
-			mWeapon.mDamageRange.mHigh = 90;
+			mWeapon.mDamageRange.mLow = 35;
+			mWeapon.mDamageRange.mHigh = 55;
 			mMagicPoints = 10;
 			mMaxNumOfMagicPts = 10;
 			mSpellname.mName = "Furious Charge";
@@ -137,6 +166,8 @@ void Player::createClass()
 			mSpellname.mDamageRange.mLow = 40;
 			mSpellname.mDamageRange.mHigh = 90;
 			mArmorz.mName = "Steel armor";
+			mStrength = 30;
+			mIntelligence = 2;
 			break;
 		
 		}
@@ -151,15 +182,15 @@ void Player::createClass()
 		case 1:
 			mRace = "Human";
 			mAccuracy = 18;
-			mHitPoints = 255;
-			mMaxHitPoints = 255;
+			mHitPoints = 5255;
+			mMaxHitPoints = 5255;
 			mExpPoints = 0;
 			mNextLevelExp = 1000;
 			mLevel = 1;
 			mArmor = 1;
 			mWeapon.mName = "Staff";
 			mWeapon.mDamageRange.mLow = 30;
-			mWeapon.mDamageRange.mHigh = 80;
+			mWeapon.mDamageRange.mHigh = 50;
 			mMagicPoints = 25;
 			mMaxNumOfMagicPts = 25;
 			mSpellname.mName = "Fire ball";
@@ -167,19 +198,21 @@ void Player::createClass()
 			mSpellname.mDamageRange.mHigh = 70;
 			mSpellReq = 5;
 			mArmorz.mName = "White Robes";
+			mStrength = 5;
+			mIntelligence = 25;
 			break;
 		case 2:
 			mRace = "Elf";
 			mAccuracy = 18;
-			mHitPoints = 255;
-			mMaxHitPoints =255;
+			mHitPoints = 5255;
+			mMaxHitPoints =5255;
 			mExpPoints = 0;
 			mNextLevelExp = 1000;
 			mLevel = 1;
 			mArmor = 1;
 			mWeapon.mName = "Staff";
 			mWeapon.mDamageRange.mLow = 30;
-			mWeapon.mDamageRange.mHigh = 80;
+			mWeapon.mDamageRange.mHigh = 50;
 			mMagicPoints = 25;
 			mMaxNumOfMagicPts = 25;
 			mSpellname.mName = "Frost bolt";
@@ -187,6 +220,8 @@ void Player::createClass()
 			mSpellname.mDamageRange.mHigh = 70;
 			mSpellReq = 5;
 			mArmorz.mName = "Black Robes";
+			mStrength = 6;
+			mIntelligence = 24;
 			break;
 	
 
@@ -196,6 +231,60 @@ void Player::createClass()
 
 	
 	}
+
+}
+void Player::PointDistributin()
+{
+	for (int i = 0; i < mSkillPoints;i++)
+	{
+		cout << "You have " << mSkillPoints << endl;
+		if (mSkillPoints == 0)
+		{
+			cout << "Zero skill points left\n";
+			
+		}
+		else {
+			if (mSkillPoints == 0)
+			{
+
+				break;
+			}
+			cout << "Choose:\n";
+			cout << "1)Max Health points = " << mMaxHitPoints << endl;
+			cout << "2)Accuracy          = " << mAccuracy << endl;
+			cout << "3)Strength          = " << mStrength << endl;
+			cout << "4)Intelligence      = " << mIntelligence << endl;
+			int choice = 0;
+			cin >> choice;
+			switch (choice)
+			{
+			case 1:
+
+				mMaxHitPoints += 20;
+				break;
+			case 2:
+				mAccuracy += 1;
+				break;
+			case 3:
+				mStrength += 1;
+				break;
+			case 4:
+				mIntelligence += 1;
+				break;
+			default:
+				cout << "Wrong input\n";
+				mSkillPoints++;
+				break;
+			}
+			mSkillPoints--;
+			
+			system("CLS");
+			PointDistributin();
+
+		}
+		
+	}
+
 
 }
 
@@ -293,9 +382,7 @@ void Player::ArenaBet(Player player)
 
 
 		}
-	}
-		
-
+	}	
 			system("PAUSE");
 			system("CLS");
 			
@@ -307,7 +394,7 @@ bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 {
 	Ability ab;
 	int b = 1;
-	int select = -1;
+	int absel = -1;
 	
 	
 	cout << "1)Weapon attack \n";
@@ -344,9 +431,9 @@ bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 		}
 		
 		
-		cin >> select;
+		cin >> absel;
 			cout << endl;
-			switch (select)
+			switch (absel)
 			{
 			case 1:
 				check = 0;
@@ -393,15 +480,15 @@ bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 					classAb[0].coolDown = classAb[0].coolDownMax;
 					if (classAb[0].types == 0)
 					{
-						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy, 0);
 					}
 					else if (classAb[0].types == 1)
 					{
-						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst, 0);
 					}
 					else if (classAb[0].types == 2)
 					{
-						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst, 0);
 					}
 				}
 				break;
@@ -409,7 +496,7 @@ bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 				if (classAb[1].coolDown != 0)
 				{
 					check = 1;
-					cout << classAb[0].mName <<" ABILITY IS ON COOLDOWN!\n";
+					cout << classAb[1].mName <<" ABILITY IS ON COOLDOWN!\n";
 					attack(monster, monst, selection);
 				}
 				else
@@ -419,15 +506,15 @@ bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 					classAb[1].coolDown = classAb[1].coolDownMax;
 					if (classAb[1].types == 0)
 					{
-						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy, 1);
 					}
 					else if (classAb[1].types == 1)
 					{
-						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst, 1);
 					}
 					else if (classAb[1].types == 2)
 					{
-						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst, 1);
 					}
 				}
 				break;
@@ -446,15 +533,15 @@ bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 					
 					if (classAb[2].types == 0)
 					{
-						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy, 2);
 					}
 					else if (classAb[2].types == 1)
 					{
-						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst, 2);
 					}
 					else if (classAb[2].types == 2)
 					{
-						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst, 2);
 					}
 
 				}
@@ -474,19 +561,19 @@ bool Player::attack(Monster& monster,vector<Monster> &monst,int selection)
 					
 					if (classAb[3].types == 0)
 					{
-						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy);
+						ab.HighDmgStrike(classAb, monster, mWeapon, mAccuracy, 3);
 					}
 					else if (classAb[3].types == 1)
 					{
-						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst);
+						ab.Stuns(classAb, monster, mWeapon, mAccuracy, selection, monst,3);
 					}
 					else if (classAb[3].types == 2)
 					{
-						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst);
+						ab.Aoe(classAb, monster, mWeapon, mAccuracy, monst, 3);
 					}
 					else if (classAb[3].types == 3)
 					{
-						ab.Bleed(classAb, monster, mWeapon, mAccuracy,selection, monst);
+						ab.Bleed(classAb, monster, mWeapon, mAccuracy,selection, monst,3);
 					}
 				}
 
@@ -613,7 +700,7 @@ void Player::itemPickup(vector<Weapon> &pinventory,int randomNumber)
 			break;
 		}
 	}
-	else if (randomNumber >= 20 && randomNumber <=23)
+	else if (randomNumber >= 20 && randomNumber <23)
 	{
 		
 		item = Random(8, 10);
@@ -650,6 +737,8 @@ void Player::reward(int xp,int gold)
 
 void Player::levelUp()
 {
+	mSkillPoints = 5;
+
 	if (mExpPoints >= mNextLevelExp)
 	{
 		cout << "You gained a level!" << endl;
@@ -659,26 +748,7 @@ void Player::levelUp()
 		// Set experience points required for next level.
 		mNextLevelExp = mLevel * mLevel * 1000;
 
-		if (mClassName == "Fighter")
-		{
-			// Increase stats randomly.
-			mAccuracy += Random(2, 3);
-			mMaxHitPoints += Random(1, 14);
-			mArmor += Random(1, 4);
-			mMaxNumOfMagicPts += Random(1, 3);
-			// Give player full hitpoints when they level up.
-			mHitPoints = mMaxHitPoints;
-		}
-		else if(mClassName == "Wizard")
-		{
-			mAccuracy += Random(1, 5);
-			mMaxHitPoints += Random(2, 4);
-			mArmor += Random(1, 2);
-			
-			mMaxNumOfMagicPts += Random(4, 10);
-			mMagicPoints = mMaxNumOfMagicPts;
-			mHitPoints = mMaxHitPoints;
-		}
+		PointDistributin();
 		
 	}
 }
@@ -823,6 +893,8 @@ void Player::viewStats()
 	cout << "Race            = " << mRace << endl;
 	cout << "Name            = " << mName << endl;
 	cout << "Class           = " << mClassName << endl;
+	cout << "Strength        = " << mStrength << endl;
+	cout << "Intelligence    = " << mIntelligence << endl;
 	cout << "Accuracy        = " << mAccuracy << endl;
 	cout << "Magic points    = " << mMagicPoints << endl;
 	cout << "Hitpoints       = " << mHitPoints << endl;
@@ -912,11 +984,7 @@ void Player::PurchaseF(std::vector<Weapon>& shop, std::vector<Weapon>& playerinv
 			mGold -= shop[itemslot].mPrice;
 			playerinventory.push_back(shop[itemslot]);
 			cout << "you have " << mGold << " gold left \n";
-#if 0
-			fstream b;
-			b.open("Goldz.txt");
-			b << mGold;
-#endif
+
 		}
 	}
 }
@@ -926,14 +994,7 @@ void Player::Purchase(vector<Weapon>& shop, vector<Weapon>& playerinventory)
 {
 	extern vector<Weapon> PlayerI;//player inventory
 	extern vector<Weapon> val;
-#if 0
-	int GoldVal ;
-	ifstream inFile;
-	inFile.open("Goldz.txt");
 
-	inFile >> GoldVal;
-	mGold = GoldVal;
-#endif
 
 	int choicef = 0;
 	cout << "Which weapon would you like to buy\n";
@@ -985,6 +1046,7 @@ void Player::Purchase(vector<Weapon>& shop, vector<Weapon>& playerinventory)
 //player,playerinventory,itemslot,shop
 void Player::SellF(Player &player, vector<Weapon> &playerinventory, unsigned int itemslot,vector<Weapon> &shopinventory)
 {
+	Shop x;
 	extern vector <Weapon> PlayerI;
 
 	if (!(itemslot < playerinventory.size()))
@@ -999,24 +1061,11 @@ void Player::SellF(Player &player, vector<Weapon> &playerinventory, unsigned int
 		}
 		else
 		{
-
-
-			mGold += playerinventory[itemslot].mPrice;
+			player.mGold += playerinventory[itemslot].mPrice;
 			cout << playerinventory[itemslot].mName << " Sold\n";
 			playerinventory.erase(playerinventory.begin()+ itemslot);
-			cout << "Gold = " << mGold << endl;
-			{
-#if 0
-				fstream f;
-				f.open("Goldz.txt");
-				f << mGold;
-#endif
-			}
-			{
-				Shop x;
-				x.EnterShop(player,shopinventory);
-			}
 
+			x.EnterShop(player,shopinventory);	
 		}
 	}
 }
@@ -1024,15 +1073,7 @@ void Player::SellF(Player &player, vector<Weapon> &playerinventory, unsigned int
 void Player::Sell(Player &player, vector<Weapon> &playerinventory,vector<Weapon>&shopinventory)
 {
 	extern vector<Weapon> PlayerI;
-#if 0
-	int GoldVal2;
-	ifstream inFile;
-	inFile.open("Goldz.txt");
 
-	inFile >> GoldVal2;
-
-	mGold = GoldVal2;
-#endif
 	if (playerinventory.size() != 0)
 	{
 		
@@ -1069,6 +1110,9 @@ void Player::Sell(Player &player, vector<Weapon> &playerinventory,vector<Weapon>
 			break;
 		case 10:
 			SellF(player, PlayerI, 9,shopinventory);
+			break;
+		default:
+			std::cout << "Wrong input\n";
 			break;
 		}
 
@@ -1407,7 +1451,7 @@ int Player::Combat(Player& player,Map &map)
 
 				}
 
-				
+
 				selection = getUserInput(0, monster.size());
 
 				switch (selection)
@@ -1439,7 +1483,7 @@ int Player::Combat(Player& player,Map &map)
 
 			extern vector <Weapon> val;
 			bool runAway = 0;
-			
+
 
 
 			runAway = attack(monster[selection], monster, selection);
@@ -1447,10 +1491,15 @@ int Player::Combat(Player& player,Map &map)
 
 
 			extern int counter;
-			
+
 			//If the player killed the monster with its attack.
+			
+
+			
+			
 			for (int i = 0; i < monster.size(); i++)
-			{ 
+			{
+				
 				if (monster[i].isDead())
 				{
 
@@ -1470,30 +1519,38 @@ int Player::Combat(Player& player,Map &map)
 					}
 
 
+
 					totalXPReward += monster[i].getXPReward();//Add monsters xp reward to the total xp reward.
 
 					totalGoldReward += monster[i].getGoldReward();//Add monsters godl reward to the toal gold reward.
-
-				
-					monster.erase(monster.begin() +i);//Remove dead monster from monster vector.
 					
-
+					
 
 				}
+			
+			}
+			for (auto i = monster.begin(); i != monster.end(); )
+			{
+
+				if (i->isDead()) i = monster.erase(i); else ++i;
+
+			}
 			//Test if the player runs away.
-				else
-				{
-					
+				
+				
 					if (runAway)
 					{
 						counter = 6;
 						return 0;
 					}
-				}
-
-		}
+				
+				
+				
+		
 			//Test if all monsters are dead.
-
+			
+				
+			
 			if (monster.empty())
 			{
 				cout << endl;
@@ -1528,16 +1585,11 @@ int Player::Combat(Player& player,Map &map)
 
 			*/
 		
-			if (player.mHitPoints > 20000 || player.mHitPoints == 0)
+			if (player.mHitPoints > 20000 || player.mHitPoints == 0)//???????
 			{
-
 				player.gameover();
 
-				
-
 				exit(0);
-		
-
 			}
 
 			system("PAUSE");
@@ -1678,7 +1730,8 @@ void Player::Load(Player &player,Map map)
 	inFile.open("Save.txt");
 	
 
-		inFile >>mRace >>
+
+	inFile >>mRace >>
 			mAccuracy >>
 			mHitPoints >>
 			mMaxHitPoints >>
@@ -1698,27 +1751,31 @@ void Player::Load(Player &player,Map map)
 			mSpellReq >>
 			mArmorz.mName>>
 		    Location; 
-		for (int i = 0; i <2; i++)
-		{
-			inFile >>
-				PlayerI[i].mName >>
-				PlayerI[i].mDamageRange.mLow >>
-				PlayerI[i].mDamageRange.mHigh >>
-				PlayerI[i].mPrice >>
-				PlayerI[i].mEquipped >>
-				PlayerI[i].mArm >>
-				PlayerI[i].mMagics >>
-				PlayerI[i].mArmorEquiped >>
-				PlayerI[i].levelReq;
-			
-		}
+
+		std::istringstream stream;
+
+		std::string line;
+
+		
+			for (int i = 0; i < 2; i++)
+			{
+				inFile
+					>> PlayerI[i].mName >>
+					PlayerI[i].mDamageRange.mLow >>
+					PlayerI[i].mDamageRange.mHigh >>
+					PlayerI[i].mPrice >>
+					PlayerI[i].mEquipped >>
+					PlayerI[i].mArm >>
+					PlayerI[i].mMagics >>
+					PlayerI[i].mArmorEquiped >>
+					PlayerI[i].levelReq;
+			}
+		
+		
 	
 	if (Location == 1)
 	{
-		
-	
 		map.worldMap(player, map);
-		
 	}
 	else if (Location == 2)
 	{
@@ -1746,21 +1803,27 @@ void Player::Abilityvec()
 	if (mClassName == "Fighter")
 	{
 
-		classAb.push_back(hdmgF);
+		
 		classAb.push_back(stunF);
 		classAb.push_back(aoeF);
 		classAb.push_back(bleedF);
+		classAb.push_back(hdmgF);
 	}
 	
 	else if(mClassName == "Wizard")
 	{
-		
-
 		classAb.push_back(hdmgW);
 		classAb.push_back(stunW);
 		classAb.push_back(aoeW);
 		classAb.push_back(bleedW);
-
 	}
 
 }
+
+
+
+
+
+
+
+

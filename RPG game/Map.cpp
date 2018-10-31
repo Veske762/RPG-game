@@ -13,6 +13,8 @@
 #include "ConsoleColor.h"
 
 
+
+
 using namespace std;
 extern vector<Weapon> val;
 extern vector<Weapon> val2;
@@ -69,6 +71,7 @@ void Map::worldMap(Player &player, Map mapz)
 	Location = 1;
 	monsterFlag = 1;
 	int mapCounter = 0;
+	//make pairs with i pos and type
 	char (*a)[81];
 	a = new char[81][81]{
 		"***************************************************************************",
@@ -114,13 +117,11 @@ void Map::worldMap(Player &player, Map mapz)
 		"~~~~~~~~~~~~~~~~***********************************************************",
 	};
 	
-
+	
 	bool game = true;
 	while (game) {
 
 		int mapCounter = 0;
-		
-		
 		
 		cout <<"Use arrow keys for movement\n" << endl;
 		cout << mPlayerXPos << "," << mPlayerYPos << endl;
@@ -157,13 +158,10 @@ void Map::worldMap(Player &player, Map mapz)
 
 				else if (a[i][j] == 'c')
 				{
-
-					if (a[i == mPlayerXPos][j == mPlayerYPos] == 'c')
-					{
-						cout << 'p';
-
-
-
+					
+					 if (a[i == mPlayerXPos][j == mPlayerYPos] == 'c')
+					{						
+						cout << 'p';	 
 					}
 					else if ((a[i == 34][j == 53]== 'c'))
 					{
@@ -183,6 +181,7 @@ void Map::worldMap(Player &player, Map mapz)
 			}
 
 		}
+		
 		if (mHQuest1 == 1)
 		{
 
@@ -191,11 +190,8 @@ void Map::worldMap(Player &player, Map mapz)
 				monsterFlag = 19;
 				player.Combat(player, mapz);
 				monsterFlag = 1;
-			}
-			
-
-		}
-		
+			}			
+		}		
 		else if (mPlayerXPos == 36 && mPlayerYPos == 12)
 		{
 
@@ -205,8 +201,7 @@ void Map::worldMap(Player &player, Map mapz)
 			Harbor(player, mapz);
 			break;
 			system("CLS");
-	    }
-		 
+	    }	 
 		if (mPlayerXPos == 29 && mPlayerYPos == 66)
 		{
 			mPlayerXPos = 18;
@@ -301,11 +296,8 @@ void Map::worldMap(Player &player, Map mapz)
 					
 			}
 		}
-
 		while (true)
 		{
-
-
 			if (mPlayerXPos == 11 && mPlayerYPos == 2 || mPlayerXPos == 11 && mPlayerYPos == 3)
 			{
 
@@ -358,11 +350,7 @@ void Map::worldMap(Player &player, Map mapz)
 							cout << 's';
 						}
 						else cout << ' ';
-
 					}
-
-
-
 					mapCounter++;
 				}
 
@@ -393,7 +381,6 @@ void Map::worldMap(Player &player, Map mapz)
 	}
 
 	
-
 	void Map::Dungeon2(Player &player, Map mapz)
 	{
 		Location = 3;
@@ -523,20 +510,12 @@ void Map::worldMap(Player &player, Map mapz)
 		system("CLS");
 	}
 	
-
-
-
 void Map::Movement(Player &player, Map &mapz, char mapf[81][81])
 {
-	
-
-
 	cout << endl;
 	cout << "Press I to view inventory | C to view stats | R to rest | S to save game";
 	cout << endl;
-
-	
-	int roll = Random(0,155);
+	int roll = Random(0,255);
 	system("pause>nul");
 	if (GetAsyncKeyState(38))
 	{
@@ -602,7 +581,7 @@ void Map::Movement(Player &player, Map &mapz, char mapf[81][81])
 	{
 		player.Save(player,mapz);
 		cout << "Game saved\n";
-		system("PAUSE");
+		
 	}
 	else if (GetAsyncKeyState(73))
 	{
@@ -691,9 +670,7 @@ void Map::Harbor(Player &player, Map mapz)
 
 
 	};
-	while (true) {
-
-		
+	while (true) {		
 		cout << "Use arrow keys for movement\n";
 		cout << mPlayerXPos << "," << mPlayerYPos << endl;
 		for (int i = 0; i < 20; i++)
@@ -752,11 +729,6 @@ void Map::Harbor(Player &player, Map mapz)
 			}
 
 		}
-
-
-
-
-
 		if (mPlayerXPos == 1 && mPlayerYPos == 45)
 		{
 			Shop shop;
@@ -795,7 +767,6 @@ void Map::Harbor(Player &player, Map mapz)
 	}
 
 }
-
 
 void Map::CastleMap(Player &player, Map mapz)
 {
@@ -893,12 +864,15 @@ void Map::CastleMap(Player &player, Map mapz)
 			}
 
 		}
+		
+			Quests w;
+		
 		if (mPlayerXPos == 12 && mPlayerYPos == 44)
 		{
 			
 			if (startingQuest == 0)
 			{
-				Quests w;
+				
 				w.Quest1(player, mapz);
 			}
 		}
@@ -911,12 +885,12 @@ void Map::CastleMap(Player &player, Map mapz)
 				
 				if (startingQuest == 2)
 				{
-					Quests w;
+					
 					w.Quest2(player, mapz);
 				}
 				if (startingQuest == 3)
 				{
-					Quests w;
+					
 					w.Quest3(player, mapz);
 				}
 

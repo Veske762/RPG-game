@@ -22,7 +22,7 @@ public:
 	int  monsterLvl();
 	
 	
-	bool isDead();
+	bool isDead()const;
 
 	int monsterStats(int l);
 

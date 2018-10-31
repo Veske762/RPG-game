@@ -25,10 +25,10 @@ public:
 	int coolDownMax;
 
 
-	void HighDmgStrike(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy);
-	void Stuns(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy, int selection, std::vector<Monster> &monst);
-	void Aoe(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy, std::vector<Monster> &monst);
-	void Bleed(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy, int selection, std::vector<Monster> &monst);
+	void HighDmgStrike(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy,int abselect);
+	void Stuns(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy, int selection, std::vector<Monster> &monst,int abselect);
+	void Aoe(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy, std::vector<Monster> &monst,int abselect);
+	void Bleed(std::vector<Ability> &ability, Monster &monster, Weapon mWeapon, int mAccuracy, int selection, std::vector<Monster> &monst,int abselect);
 
 };
 

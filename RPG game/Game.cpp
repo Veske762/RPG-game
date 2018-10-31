@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "Random.h"
 #include "Map.h"
@@ -9,12 +10,13 @@
 #include <windows.h>
 #include <limits>
 #include "Abilities.h"
+
 using namespace std;
 
 
 void gameintro()
 {
-	cout << "==DESCRIPTION==\n";
+	cout << "===DESCRIPTION===\n";
 	cout << "p - player\n";
 	cout << "n - npc/quest giver\n";
 	cout << "s - shop\n";
@@ -24,7 +26,6 @@ void gameintro()
 	cout << "To talk to npc again walk out and then in npc spot\n";
 	cout << "Head to the castle (29,66).\n";
 }
-
 
 int main()
 {
@@ -39,14 +40,7 @@ int main()
 	RECT r;
 	GetWindowRect(console, &r); //stores the console's current dimensions
 
-	MoveWindow(console, r.left, r.top, 800, 860, TRUE); // 800 width, 100 height
-
-
-
-
-
-
-
+	MoveWindow(console, r.left, r.top, 800, 860, TRUE);
 
 	srand((unsigned int)time(0));
 
@@ -72,7 +66,7 @@ int main()
 	{
 	case 1:
 		cin.ignore(256, '\n');
-		
+
 		mainPlayer.createClass();
 		break;
 	case 2:
@@ -81,13 +75,23 @@ int main()
 		player.Load(player, map);
 		break;
 	}
+	case 3:
+	{
+	
+	}
+	case 4:
+	{
+
+
+	
+		
+	}
+		break;
 	default:
 		cout << "Wrong input\n";
 		break;
 	}
-
 	
-		
 	mainPlayer.Abilityvec();
 	system("CLS");
 	bool done = true;

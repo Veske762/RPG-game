@@ -82,12 +82,20 @@ public:
 
 	void itemPickup(std::vector<Weapon> &pinventory,int randomNumber);
 
+	void PointDistributin();
 
 	void Save(Player &player, Map &map);
 	
 	void Abilityvec();
 
 	void Load(Player &player, Map map);
+	//multiplayer
+
+	void server();
+
+
+
+
 
 	// Data members.
 	std::string mName;				
@@ -107,9 +115,10 @@ public:
 	unsigned int mMagicPoints;
 	unsigned int mMaxNumOfMagicPts;
 	unsigned int mSpellReq;
-	
-	
-	
+	int mStrength;
+	int mIntelligence;
+	int mSkillPoints;
+
 }; 
 
 

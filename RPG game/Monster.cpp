@@ -30,15 +30,10 @@ Monster::Monster(const std::string& name, int hp, int acc,
 int Monster::monsterStats(int l)
 {
 
-
-	
 	for (int i = 0; i <monsterLevel; i++)
 	{
 		l += 1;
-
-
 	}
-
 	return l;
 }
 
@@ -51,7 +46,7 @@ int Monster::monsterLvl()
 	return monsterLevel;
 }
 
-bool Monster::isDead()
+bool Monster::isDead()const 
 {
 	return mHitPoints <= 0;
 }
@@ -67,7 +62,6 @@ void Monster::takeDamage(int damage)
 }
 std::string Monster::getName()
 {
-	
 		return mName;
 }
 int Monster::getGoldReward()

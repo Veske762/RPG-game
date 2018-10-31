@@ -1,3 +1,3 @@
 ﻿  Player.cpp
-c:\users\stefan\source\repos\rpg game\rpg game\player.cpp(1411): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+c:\users\stefan\source\repos\rpg game\rpg game\player.cpp(1455): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
   RPG game.vcxproj -> C:\Users\Stefan\source\repos\RPG game\x64\Debug\RPG game.exe

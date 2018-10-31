@@ -41,7 +41,11 @@ public:
 	void printPlayerPos();
 
 
-	
+
+	void sendplayerPos(Player player, Map mapz);
+	void recvplayerPos();
+	void printPos(int i, int j, int x2,int y2, char h[81][81]);
+
 	int mPlayerXPos;		
 	int mPlayerYPos;		
 };
