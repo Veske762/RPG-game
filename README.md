@@ -1,4 +1,41 @@
 # RPG-game
+
+
+Problems:<br />
+vector problem:<br />
+If aoe ability kills 2 or more vector erase problem<br />
+in function int Player::Combat(Player& player,Map &map)<br />
+for (int i = 0; i < monster.size(); i++)<br />
+			{ <br />
+				if (monster[i].isDead()) //isDead() checks if monster hp is <=0<br />
+				{<br />
+    //some non problem code<br />
+    
+					monster.erase(monster.begin() +i);//here is the problem
+     
+     if enemies die 1 per turn it works fine but if Aoe attack kills 2 or more enemies this happens:
+     example:
+     player vs 3 enemies
+     if aoe kills all of them at once
+     monster vector index(0,1,2)
+     first iteration i = 0 deletes monster at index 0
+     now vector looks like this(0,1) 1,2 shift to 0,1
+     second iteration i = 1 3rd monster gets deleted and 2nd one gets skipped
+     and it leaves me with 2nd monster with -hp against the player
+     
+				}
+Load problem:<br />
+function void Player::Load(Player &player,Map map)<br />
+Im saving stuff to the text file line by line (not fully yet) it works<br />
+Loading works if strings dont have spaces example Double Edged Axe messes up loading<br />
+but DoubleEdgedAxe works <br />
+
+
+
+
+
+
+
 Im C++ noob.<br />
 Tips and advice are welcome.<br />
 Console game inspired by exercise from Game Institute module 1 book chapter Chapter 5 Classes and Object Oriented Programming<br />
@@ -20,15 +57,16 @@ Feature list:<br />
 -monsters level affect stats<br />
 -boss fights<br />
 -2d<br />
-
+-abilities added (replacing spells)<br />
 
 
  TBD:<br />
+-more abilities<br />
 -fix input(bugs out if you enter a character when it expects int)<br />
 -skill point distribution(currently its random fighter gets more hp ,wizard gets more mana)<br />
--arena (done player vs enemies,maybe adding npc vs npc while betting,location to be changed)(<br />
+-arena (location to be changed)<br />
 -betting (done)<br />
--more quests/bosses/items/places/monsters/spells<br />
+-more quests/bosses/items/places/monsters/<br />
 -health/mana potions<br />
 -resting system rework<br />
 -balance<br />
